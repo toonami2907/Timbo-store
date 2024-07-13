@@ -14,7 +14,7 @@ export default function ProductProvider({ children }) {
 
     const fetchAndRemoveProducts = async () => {
         try {
-            const response =await axios.get(`https://api.timbu.cloud/products?organization_id=e93554589c4e4b0fa96dcd763ad28532&reverse_sort=false&page=1&Appid=K16NZFZPDN3M6XH&Apikey=96f5a2de92a74f0893e761ce068fa42a20240712150020262309`)
+            const response =await axios.get(`/api/products?organization_id=${organization_id}&reverse_sort=false&page=1&Appid=${App_id}&Apikey=${apiKey2}`)
             const products = response.data.items; // Assuming response.data is the array of products
             
             // console.log("Original products:", products);
