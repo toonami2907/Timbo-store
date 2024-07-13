@@ -1,0 +1,36 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+*{
+    margin: 0;
+    padding: 0;
+    font-family:  "unbounded";
+    list-style-type: none;
+}
+@layer utilities {
+    .Footer{
+        @apply flex flex-col gap-2 md:text-sm text-xs  text-gray-600 border-b md:border-0 md:pb-0 pb-2 
+    }
+    .Footer-li{
+        @apply font-["unbounded-bold"] flex items-center justify-between text-gray-700
+    }
+    
+}
+
+
+
+
+
+@font-face {
+    font-family: "unbounded";
+    src: url('assets/font/Unbounded-Regular.ttf');
+}
+@font-face {
+    font-family: "unbounded-medium";
+    src: url('assets/font/Unbounded-Medium.ttf');
+}
+@font-face {
+    font-family: "unbounded-bold";
+    src: url('assets/font/Unbounded-Bold.ttf');
+}
