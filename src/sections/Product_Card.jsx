@@ -70,7 +70,6 @@ export default function Product_Card({ product }) {
           />
         )}
         <button
-          onClick={() => AddtoCart(product.id)}
           className="absolute bottom-2 bg-gray-200/70 p-2 right-2 rounded-full"
         >
           <ShoppingBag />

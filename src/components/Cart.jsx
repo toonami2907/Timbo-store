@@ -20,7 +20,7 @@ export default function Cart({ setOpen, open }) {
   const clearLocalStorage = () => {
     localStorage.removeItem("cart"); // Clear local storage
     setCartItems([]); // Reset cart state
-    toast.success("Cart cleared successfully"); // Reload the page to reflect cleared state
+    toast.success("Cart cleared successfully");
   };
 
   useEffect(() => {
@@ -28,6 +28,18 @@ export default function Cart({ setOpen, open }) {
     setCartItems(cartLocalStorage);
     setClear(cartLocalStorage.length === 0);
   }, []);
+
+  const handleRemoveItem = (id) => {
+    removeFromLocalStorageArray("cart", id, setCartItems);
+  };
+
+  const handleIncrementQuantity = (id) => {
+    incrementItemQuantity("cart", id, setCartItems);
+  };
+
+  const handleDecrementQuantity = (id) => {
+    decrementItemQuantity("cart", id, setCartItems);
+  };
 
   return (
     <div className="w-full h-full flex flex-col">
@@ -55,7 +67,7 @@ export default function Cart({ setOpen, open }) {
                             Price: {item.current_price || 33}
                           </p>
                           <button 
-                            onClick={() => removeFromLocalStorageArray("cart", item.id)}
+                            onClick={() => handleRemoveItem(item.id)}
                             className='flex items-center  w-5 text-red-600'>
                             <Trash size={20} />
                           </button>
@@ -64,7 +76,7 @@ export default function Cart({ setOpen, open }) {
                           <button
                             type="button"
                             className="text-sm font-medium text-indigo-600 hover:text-indigo-500"
-                            onClick={() => incrementItemQuantity("cart", item.id)}
+                            onClick={() => handleIncrementQuantity(item.id)}
                           >
                             <Plus />
                           </button>
@@ -72,7 +84,7 @@ export default function Cart({ setOpen, open }) {
                           <button
                             type="button"
                             className="text-sm font-medium text-indigo-600 hover:text-indigo-500"
-                            onClick={() => decrementItemQuantity("cart", item.id)}
+                            onClick={() => handleDecrementQuantity(item.id)}
                           >
                             <Minus />
                           </button>
