@@ -2,38 +2,40 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Minus, Plus, Trash } from 'lucide-react';
 import { decrementItemQuantity, incrementItemQuantity, removeFromLocalStorageArray } from '../utils/Index';
+import toast from 'react-hot-toast';
 
 export const calculateTotal = (cartitems) => {
-  console.log(cartitems);
-  return (
-    cartitems &&
-    cartitems.reduce(
-      (total, item) => total + (item.current_price || 33) * (item.qty || 1),
-      0
-    ) || 0
-  );
+  return cartitems.reduce((total, item) => total + (item.current_price || 33) * (item.qty || 1), 0);
 };
 
 export default function Cart({ setOpen, open }) {
-  const [cartitems, setCart] = useState([]);
-  
+  const [cartitems, setCartItems] = useState([]);
+  const [clear, setClear] = useState(false);
+
   const getFullImageUrl = (url) => {
     const baseUrl = 'https://api.timbu.cloud/images/';
     return `${baseUrl}${url}`;
   };
 
+  const clearLocalStorage = () => {
+    localStorage.removeItem("cart"); // Clear local storage
+    setCartItems([]); // Reset cart state
+    toast.success("Cart cleared successfully"); // Reload the page to reflect cleared state
+  };
+
   useEffect(() => {
     const cartLocalStorage = JSON.parse(localStorage.getItem("cart") || "[]");
-    setCart(cartLocalStorage);
+    setCartItems(cartLocalStorage);
+    setClear(cartLocalStorage.length === 0);
   }, []);
 
   return (
     <div className="w-full h-full flex flex-col">
-      <div className="w-full  overflow-y-auto px-4 pt-4 pb-16 sm:pt-8 sm:pb-24 xl:pt-14">
-        <div className="w-full">     
+      <div className="w-full overflow-y-auto px-4 pt-4 pb-16 sm:pt-8 sm:pb-24 xl:pt-14">
+        <div className="w-full">
           <div className="flow-root">
             <ul role="list" className="-my-6 divide-y divide-gray-200">
-              {Array.isArray(cartitems) && cartitems.length === 0 ? (
+              {cartitems.length === 0 ? (
                 <h1 className="text-3xl py-5">NO ITEM. ADD ITEMS</h1>
               ) : (
                 cartitems.map((item, idx) => (
@@ -91,15 +93,18 @@ export default function Cart({ setOpen, open }) {
         </div>
         <div className="mt-6 flex flex-col gap-3">
           <button
+           disabled={clear}
             onClick={() => setOpen(!open)}
             className="bg-black w-full rounded-md py-3 text-white text-lg"
           >
             <Link to='/Checkout'>Checkout</Link>
           </button>
           <button
-            className="bg-red-500 w-full rounded-md py-3 text-white text-lg"
+            disabled={clear}
+            onClick={clearLocalStorage}
+            className={`bg-red-700 w-full ${clear ? 'disabled:bg-red-400 cursor-not-allowed' : 'hover:bg-red-500'} rounded-md py-3 text-white text-lg`}
           >
-           Clear cart
+            Clear cart
           </button>
         </div>
       </div>

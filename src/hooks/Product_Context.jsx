@@ -6,6 +6,7 @@ export default function ProductProvider({ children }) {
     const [products, setProducts] = useState([])
     const [female, setFemale] = useState([])
     const [men, setMen] = useState([])
+    const [loading, setLoading] = useState(true);
 
     const apiKey = "3033f1f1dad44fcb8d86ed91dfe131cb20240712123809729209";
     const apiKey2 = "96f5a2de92a74f0893e761ce068fa42a20240712150020262309";
@@ -14,6 +15,7 @@ export default function ProductProvider({ children }) {
 
     const fetchAndRemoveProducts = async () => {
         try {
+            setLoading(true)
             const response =await axios.get(`/api/products?organization_id=${organization_id}&reverse_sort=false&page=1&Appid=${App_id}&Apikey=${apiKey2}`)
             const products = response.data.items; // Assuming response.data is the array of products
             
@@ -21,12 +23,13 @@ export default function ProductProvider({ children }) {
     
             for (let i = products.length - 1; i >= 0; i--) {
                 if (products[i].name && products[i].name.includes("Women's")) {
-                    console.log("Removing product:", products[i].name);
+                    // console.log("Removing product:", products[i].name);
                     products.splice(i, 1); // Remove the product at index i
                 }
             }
     
             // console.log("Updated products:", products);
+            setLoading(false)
             setProducts(products)
         } catch (error) {
             console.error("Error fetching products:", error);
@@ -38,7 +41,7 @@ export default function ProductProvider({ children }) {
             const response = await axios.get(`/api/products?organization_id=${organization_id}&reverse_sort=false&page=1&Appid=${App_id}&Apikey=${apiKey2}`);
             const products = response.data.items; // Assuming response.data is the array of products
             
-            console.log("Original products:", products);
+            // console.log("Original products:", products);
     
             const updatedProducts = [];
     
@@ -48,7 +51,7 @@ export default function ProductProvider({ children }) {
                 }
             }
     
-            console.log("Updated products with Women's:", updatedProducts);
+            // console.log("Updated products with Women's:", updatedProducts);
             setFemale(updatedProducts); // Assuming setFemale updates state or performs another action
         } catch (error) {
             console.error("Error fetching products:", error);
@@ -62,5 +65,5 @@ export default function ProductProvider({ children }) {
         fetchAndExcludeWomen()
       },[])
 
-  return <ProductContext.Provider value={{products,apiKey2,App_id,organization_id, female}}>{children}</ProductContext.Provider>;
+  return <ProductContext.Provider value={{products,apiKey2,App_id,organization_id,loading, female}}>{children}</ProductContext.Provider>;
 }

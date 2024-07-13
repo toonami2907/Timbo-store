@@ -5,12 +5,30 @@ import Cart, { calculateTotal } from "../components/Cart";
 import CheckCart from "../components/CheckCart";
 
 export default function Checkout() {
-  const [cartitems, setCart]= useState([])
-  console.log(cartitems);
-  useEffect(()=>{
+  const [cartitems, setCart] = useState([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  useEffect(() => {
     const cartLocalStorage = JSON.parse(localStorage.getItem("cart") || "[]");
-    setCart(cartLocalStorage)
-  },[])
+    setCart(cartLocalStorage);
+  }, []);
+
+
+  const handlePay = () => {
+    if(cartitems == "[]"){
+      return
+    }
+    setIsModalOpen(true);
+    
+  };
+
+  const handleCloseModal = () => {
+   
+    setIsModalOpen(false);
+    localStorage.removeItem("cart"); // Clear local storage
+    setCart([]); // Reset cart state
+  };
+
   return (
     <div className="md:px-10 px-5 py-5">
       <section className="h-screen w-full py-2 flex items-center justify-center">
@@ -33,12 +51,12 @@ export default function Checkout() {
           <div className="lg:col-span-1 w-full lg:h-[600px] flex flex-col justify-between shadow-sm bg-white px-2 py-5">
             <div className="flex justify-between text-sm py-2">
               <h1 className="font-semibold">Order total</h1>
-              <p>edit</p>
+              <p>Edit</p>
             </div>
             <div className="lg:max-h-full h-full lg:h-[350px] lg:overflow-y-auto ">
               <CheckCart cartitems={cartitems} />
             </div>
-            <section className=" border-b-2 md:border-t-2 py-3 flex gap-5 flex-col border-gray-200">
+            <section className="border-b-2 md:border-t-2 py-3 flex gap-5 flex-col border-gray-200">
               <div className="flex justify-between text-xs text-gray-700 py-2">
                 <p>{cartitems && cartitems.length} items</p>
                 <p>${calculateTotal(cartitems)}</p>
@@ -48,14 +66,35 @@ export default function Checkout() {
                 <p>$5.00</p>
               </div>
             </section>
-            <div className="flex justify-between text-sm font-bold py-5 ">
-                <p>Total to pay:</p>
-                <p>${calculateTotal(cartitems) + 5}</p>
+            <div className="flex justify-between text-sm font-bold py-5">
+              <p>Total to pay:</p>
+              <p>${calculateTotal(cartitems) + 5}</p>
             </div>
-            <button className="bg-black text-white w-full py-2">Pay</button>
+            <button
+            disabled={ cartitems == "[]"}
+              onClick={handlePay}
+              className="bg-black text-white w-full py-2"
+            >
+              Pay
+            </button>
           </div>
         </div>
       </section>
+
+      {isModalOpen && (
+        <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
+          <div className="bg-white p-5 rounded-lg shadow-lg w-[70%]">
+            <h2 className="text-lg font-bold mb-4">Purchase Confirmation</h2>
+            <p>Your goods have been purchased successfully!</p>
+            <button
+              onClick={handleCloseModal}
+              className="bg-black text-white w-full py-2 mt-4"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

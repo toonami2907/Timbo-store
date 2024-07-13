@@ -31,7 +31,6 @@ export default function Product_Detai() {
         try {
           const response = await axios.get(`/api/products/${id}?organization_id=${organization_id}&Appid=${App_id}&Apikey=${apiKey2}`);
           const productToAdd = { ...response.data, qty: 1 }; // Add qty field with initial value
-          console.log("this is product", productToAdd);
     
           let cart = JSON.parse(localStorage.getItem("cart")) || [];
     
@@ -61,7 +60,7 @@ export default function Product_Detai() {
     useEffect(()=>{
         FindProductById()
     },[])
-    console.log(detail);
+
     const getFullImageUrl = (url) => {
         const baseUrl = 'https://api.timbu.cloud/images/';
         return `${baseUrl}${url}`;

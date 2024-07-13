@@ -21,6 +21,7 @@ export default function CheckCart({cartitems}) {
               <div className="space-y-1 sm:flex sm:items-start sm:justify-between sm:space-x-6">
                 <div className="flex-auto flex flex-col justify-center text-sm font-medium space-y-1">
                   <h3 className="text-gray-600 text-xs">{item.name}</h3>
+                  <h3 className="text-gray-600 text-xs">Qty : {item.qty}</h3>
                   <p className="text-gray-900 text-sm">${item.current_price || 33}</p>
                   <button 
                      onClick={()=>removeFromLocalStorageArray("cart", item.id)}

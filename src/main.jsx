@@ -1,13 +1,17 @@
-import React from "react";
+import React,{ Suspense, lazy } from "react";
 import ReactDOM from "react-dom/client";
-import App from "./App.jsx";
 import "./index.css";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Layout from "./Layout.jsx";
-import Women from "./pages/Women.jsx";
-import Checkout from "./pages/Checkout.jsx";
 import ProductProvider from "./hooks/Product_Context.jsx";
-import Product_Detai from "./pages/Product_Detai.jsx";
+import Loading from '../src/components/Loading.jsx'
+
+
+const Product_Detai = lazy(() => import("./pages/Product_Detai.jsx"));
+const Checkout = lazy(() => import("./pages/Checkout.jsx"));
+const Women = lazy(() => import("./pages/Women.jsx"));
+const App = lazy(() => import("./App.jsx"));
+
 
 const AppRoutes = () => {
   return (
@@ -23,8 +27,10 @@ const AppRoutes = () => {
 };
 ReactDOM.createRoot(document.getElementById("root")).render(
   <BrowserRouter>
+  <Suspense fallback={<Loading />}>
   <ProductProvider>
     <AppRoutes />
   </ProductProvider>
-  </BrowserRouter>
+  </Suspense>
+</BrowserRouter>
 );
