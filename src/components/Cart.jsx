@@ -29,7 +29,7 @@ export default function Cart({ setOpen, open }) {
 
   return (
     <div className="w-full h-full flex flex-col">
-      <div className="w-full flex-grow overflow-y-auto px-4 pt-4 pb-16 sm:pt-8 sm:pb-24 xl:pt-14">
+      <div className="w-full  overflow-y-auto px-4 pt-4 pb-16 sm:pt-8 sm:pb-24 xl:pt-14">
         <div className="w-full">     
           <div className="flow-root">
             <ul role="list" className="-my-6 divide-y divide-gray-200">
@@ -84,17 +84,22 @@ export default function Cart({ setOpen, open }) {
           </div>
         </div>
       </div>
-      <div className="w-full border-t border-gray-200 px-4 py-6 sm:px-6">
+      <div className="w-full border-t border-gray-200 md:px-4 py-6 ">
         <div className="flex justify-between text-base font-medium text-gray-900">
           <p>Total:</p>
           <p>${calculateTotal(cartitems)}</p>
         </div>
-        <div className="mt-6">
+        <div className="mt-6 flex flex-col gap-3">
           <button
             onClick={() => setOpen(!open)}
             className="bg-black w-full rounded-md py-3 text-white text-lg"
           >
             <Link to='/Checkout'>Checkout</Link>
+          </button>
+          <button
+            className="bg-red-500 w-full rounded-md py-3 text-white text-lg"
+          >
+           Clear cart
           </button>
         </div>
       </div>

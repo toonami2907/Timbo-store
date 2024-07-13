@@ -121,7 +121,7 @@ export const Navbar2 = () => {
             open ? "translate-x-0" : "translate-x-full"
           } bg-opacity-50 bg-black backdrop-blur-sm z-50`}
         >
-          <div className="sm:w-[70%] w-full h-screen absolute px-10 top-0 right-0 bg-white">
+          <div className="w-full md:w-[70%]  h-screen absolute px-10 top-0 right-0 bg-white">
             <button
               onClick={() => setOpen(!open)}
               type="button"
